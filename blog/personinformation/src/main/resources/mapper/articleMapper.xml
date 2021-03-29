@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.personinformation.dao.articledao">
+
+    <select id="getarticle" parameterType="java.lang.String" resultType="com.example.personinformation.bean.article">
+        select articleid,articletitle,articlecontent,userid,date,loveamount from article where articletitle = #{articletitle}
+    </select>
+    <select id="getarticlebyarticleid" parameterType="java.lang.Integer" resultType="com.example.personinformation.bean.article">
+        select articleid,articletitle,articlecontent,userid,date,loveamount from article where articleid = #{articleid}
+    </select>
+     <!--   keyProperty  获取到的新插入的记录的主键赋值给返回对象的属性 -->
+    <insert id="addarticle" parameterType="com.example.personinformation.bean.article" useGeneratedKeys="true" keyProperty="articleid">
+        insert into article(articletitle,articlecontent,userid,date,loveamount) values(#{articletitle},#{articlecontent},#{userid},#{date},#{loveamount});
+    </insert>
+
+    <!-- 多个用户对象 ， mybatis  会自动判断多个User，自动封装成集合   -->
+    <select id="listarticle" resultType="com.example.personinformation.bean.article">
+        select articleid,articletitle,articlecontent,userid,date,loveamount from article ;
+    </select>
+    <!-- 多个用户对象 ， mybatis  会自动判断多个User，自动封装成集合   -->
+    <select id="getuserarticle" resultType="com.example.personinformation.bean.article">
+        select articleid,articletitle,articlecontent,userid,date,loveamount from article where userid=#{userid};
+    </select>
+    <update id="updatearticle" parameterType="com.example.personinformation.bean.article" >
+        update article <trim prefix="set" suffixOverrides=",">
+            <if test="articletitle!=null">articletitle=#{articletitle},</if>
+            <if test="articlecontent!=null">articlecontent=#{articlecontent},</if>
+            <if test="date!=null">date=#{date},</if>
+            <if test="loveamount!=null">loveamount=#{loveamount},</if>
+        </trim> where articleid=#{articleid};
+    </update>
+
+    <delete id="deletearticle" parameterType="java.lang.String">
+          delete from article where articletitle=#{articletitle}
+    </delete>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.personinformation.dao.userdao">
+
+    <select id="getuser" parameterType="com.example.personinformation.bean.user" resultType="com.example.personinformation.bean.user">
+        select userid,username,password,phone,netname,position,corporation,introduction from user where username=#{username} and password=#{password};
+    </select>
+    <select id="getuserbyid" parameterType="java.lang.Integer" resultType="com.example.personinformation.bean.user">
+        select userid,username,password,phone,netname,position,corporation,introduction from user where userid=#{userid};
+    </select>
+     <!--   keyProperty  获取到的新插入的记录的主键赋值给返回对象的属性 -->
+    <insert id="adduser" parameterType="com.example.personinformation.bean.user" useGeneratedKeys="true" keyProperty="userid">
+        insert into user(username,password,phone,netname,position,corporation,introduction) values(#{username},#{password},#{phone},#{netname},#{position},#{corporation},#{introduction});
+    </insert>
+
+    <!-- 多个用户对象 ， mybatis  会自动判断多个User，自动封装成集合   -->
+    <select id="listuser" resultType="com.example.personinformation.bean.user">
+        select userid,username,password,phone,netname,position,corporation,introduction from user ;
+    </select>
+
+    <update id="updateuser" parameterType="com.example.personinformation.bean.user" >
+        update user <trim prefix="set" suffixOverrides=",">
+            <if test="password!=null">password=#{password},</if>
+            <if test="phone!=null">phone=#{phone},</if>
+            <if test="netname!=null">netname=#{netname},</if>
+            <if test="position!=null">position=#{position},</if>
+            <if test="corporation!=null">corporation=#{corporation},</if>
+            <if test="introduction!=null">introduction=#{introduction},</if>
+        </trim> where username=#{username};
+    </update>
+
+    <delete id="deleteuser" parameterType="java.lang.String">
+          delete from user where username=#{username};
+    </delete>
+
+</mapper>

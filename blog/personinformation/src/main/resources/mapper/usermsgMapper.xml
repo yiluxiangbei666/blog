@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.personinformation.dao.usermsgdao">
+
+    <select id="getMsglist" parameterType="java.lang.Integer" resultType="com.example.personinformation.bean.usermsg">
+        select msgid,sendUser,toUser,message from usermsg where toUser=#{toUser};
+    </select>
+    <insert id="addusermsg" parameterType="com.example.personinformation.bean.usermsg" useGeneratedKeys="true" keyProperty="msgid">
+        insert into usermsg(sendUser,toUser,message) values(#{sendUser},#{toUser},#{message});
+    </insert>
+    <delete id="deleteusermsg" parameterType="java.lang.Integer">
+          delete from usermsg where toUser=#{toUser};
+    </delete>
+
+</mapper>

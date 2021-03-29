@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.personinformation.dao.replydao">
+     <!--   keyProperty  获取到的新插入的记录的主键赋值给返回对象的属性 -->
+    <insert id="addreply" parameterType="com.example.personinformation.bean.reply" useGeneratedKeys="true" keyProperty="replyid">
+        insert into reply(articleid,userid,content) values(#{articleid},#{userid},#{content});
+    </insert>
+
+    <!-- 多个用户对象 ， mybatis  会自动判断多个User，自动封装成集合   -->
+    <select id="listreply" resultType="com.example.personinformation.bean.reply">
+        select replyid,articleid,userid,content from reply;
+    </select>
+    <select id="listreplybyid" resultType="com.example.personinformation.bean.reply">
+        select replyid,articleid,u.userid,content,u.username from reply r join user u where articleid=#{articleid} and r.userid=u.userid;
+    </select>
+    <select id="listreplybyuserid" resultType="com.example.personinformation.bean.reply">
+        select replyid,articleid,userid,content from reply where userid=#{userid};
+    </select>
+    <delete id="deletereply" parameterType="java.lang.Integer">
+          delete from reply where replyid=#{replyid};
+    </delete>
+</mapper>
